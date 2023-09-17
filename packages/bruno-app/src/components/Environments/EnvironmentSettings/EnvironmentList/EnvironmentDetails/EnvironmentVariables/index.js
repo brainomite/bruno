@@ -40,6 +40,10 @@ const EnvironmentVariables = ({ environment, collection }) => {
         variable.value = e.target.value;
         break;
       }
+      case 'secret': {
+        variable.secret = e.target.checked;
+        break;
+      }
       case 'enabled': {
         variable.enabled = e.target.checked;
         break;
@@ -65,6 +69,7 @@ const EnvironmentVariables = ({ environment, collection }) => {
           <tr>
             <td>Name</td>
             <td>Value</td>
+            <td>Secret</td>
             <td></td>
           </tr>
         </thead>
@@ -95,6 +100,14 @@ const EnvironmentVariables = ({ environment, collection }) => {
                         value={variable.value}
                         className="mousetrap"
                         onChange={(e) => handleVarChange(e, variable, 'value')}
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        checked={variable.secret}
+                        className="mr-3 mousetrap"
+                        onChange={(e) => handleVarChange(e, variable, 'secret')}
                       />
                     </td>
                     <td>

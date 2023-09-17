@@ -173,6 +173,7 @@ const handler = async function (argv) {
       const envBruContent = fs.readFileSync(envFile, 'utf8');
       const envJson = bruToEnvJson(envBruContent);
       envVars = getEnvVars(envJson);
+      // TODO: we need to get secrets from the store here
     }
 
     const options = getOptions();

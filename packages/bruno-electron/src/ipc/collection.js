@@ -18,6 +18,9 @@ const { openCollectionDialog, openCollection } = require('../app/collections');
 const { generateUidBasedOnHash } = require('../utils/common');
 const { moveRequestUid, deleteRequestUid } = require('../cache/requestUids');
 const { setPreferences } = require('../app/preferences');
+const EnvironmentSecretsStore = require('../utils/store');
+
+const environmentSecretsStore = new EnvironmentSecretsStore();
 
 const registerRendererEventHandlers = (mainWindow, watcher, lastOpenedCollections) => {
   // browse directory
@@ -135,6 +138,7 @@ const registerRendererEventHandlers = (mainWindow, watcher, lastOpenedCollection
         variables: []
       });
       await writeFile(envFilePath, content);
+      environmentSecretsStore.create(name);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -175,6 +179,7 @@ const registerRendererEventHandlers = (mainWindow, watcher, lastOpenedCollection
       }
 
       fs.renameSync(envFilePath, newEnvFilePath);
+      environmentSecretsStore.rename(environment);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -190,6 +195,7 @@ const registerRendererEventHandlers = (mainWindow, watcher, lastOpenedCollection
       }
 
       fs.unlinkSync(envFilePath);
+      environmentSecretsStore.delete(environment);
     } catch (error) {
       return Promise.reject(error);
     }
@@ -232,6 +238,7 @@ const registerRendererEventHandlers = (mainWindow, watcher, lastOpenedCollection
       const content = jsonToBru(jsonData);
       await writeFile(newPath, content);
       await fs.unlinkSync(oldPath);
+      environmentSecretsStore.delete(environmentName);
     } catch (error) {
       return Promise.reject(error);
     }

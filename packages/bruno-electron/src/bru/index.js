@@ -14,7 +14,7 @@ const bruToEnvJson = (bru) => {
     }
 
     return json;
-  } catch (error) {
+  } catch (e) {
     return Promise.reject(e);
   }
 };
@@ -23,7 +23,7 @@ const envJsonToBru = (json) => {
   try {
     const bru = envJsonToBruV2(json);
     return bru;
-  } catch (error) {
+  } catch (e) {
     return Promise.reject(e);
   }
 };

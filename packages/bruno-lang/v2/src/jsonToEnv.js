@@ -13,9 +13,9 @@ const envToJson = (json) => {
   const secretVars = variables
     .filter((variable) => variable.secret)
     .map((variable) => {
-      const { name, value, enabled } = variable;
+      const { name, enabled } = variable;
       const prefix = enabled ? '' : '~';
-      return `  ${prefix}${name}: ${value}`;
+      return `  ${prefix}${name}`;
     });
 
   if (!variables || !variables.length) {
@@ -30,6 +30,10 @@ const envToJson = (json) => {
 ${vars.join('\n')}
 }
 `;
+  }
+
+  if (vars.length && secretVars.length) {
+    output += '\n';
   }
 
   if (secretVars.length) {

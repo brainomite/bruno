@@ -23,7 +23,7 @@ const grammar = ohm.grammar(`Bru {
   vars = "vars" dictionary
 }`);
 
-const mapPairListToKeyValPairs = (pairList = []) => {
+const mapPairListToKeyValPairs = (pairList = [], secret = false) => {
   if (!pairList.length) {
     return [];
   }
@@ -40,6 +40,7 @@ const mapPairListToKeyValPairs = (pairList = []) => {
     return {
       name,
       value,
+      secret,
       enabled
     };
   });
@@ -97,21 +98,13 @@ const sem = grammar.createSemantics().addAttribute('ast', {
     return elements.map((e) => e.ast);
   },
   vars(_1, dictionary) {
-    const vars = mapPairListToKeyValPairs(dictionary.ast);
-    _.each(vars, (v) => {
-      v.secret = false;
-    });
     return {
-      variables: vars
+      variables: mapPairListToKeyValPairs(dictionary.ast, false)
     };
   },
   secretvars: (_1, dictionary) => {
-    const vars = mapPairListToKeyValPairs(dictionary.ast);
-    _.each(vars, (v) => {
-      v.secret = true;
-    });
     return {
-      variables: vars
+      variables: mapPairListToKeyValPairs(dictionary.ast, true)
     };
   }
 });

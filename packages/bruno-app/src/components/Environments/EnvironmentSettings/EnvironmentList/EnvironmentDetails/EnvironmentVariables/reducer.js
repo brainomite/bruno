@@ -12,6 +12,7 @@ const reducer = (state, action) => {
           name: '',
           value: '',
           type: 'text',
+          secret: false,
           enabled: true
         });
         draft.hasChanges = true;
@@ -23,6 +24,7 @@ const reducer = (state, action) => {
         const variable = find(draft.variables, (v) => v.uid === action.variable.uid);
         variable.name = action.variable.name;
         variable.value = action.variable.value;
+        variable.secret = action.variable.secret;
         variable.enabled = action.variable.enabled;
         draft.hasChanges = true;
       });
