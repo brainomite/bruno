@@ -52,4 +52,47 @@ describe("env parser", () => {
     const output = parser(input);
     expect(output).toEqual(expected);
   });
+
+  it("should parse secret vars", () => {
+    const input = {
+      "variables": [{
+        "name": "url",
+        "value": "http://localhost:3000",
+        "enabled" : true,
+      }, {
+        "name": "token",
+        "value": "abracadabra",
+        "enabled" : true,
+        "secret": true
+      }]
+    };
+
+    const output = parser(input);
+    const expected = `vars {
+  url: http://localhost:3000
+}
+vars:secret {
+  token: abracadabra
+}
+`;
+    expect(output).toEqual(expected);
+  });
+
+  it("should parse even if the only secret vars are present", () => {
+    const input = {
+      "variables": [{
+        "name": "token",
+        "value": "abracadabra",
+        "enabled" : true,
+        "secret": true
+      }]
+    };
+
+    const output = parser(input);
+    const expected = `vars:secret {
+  token: abracadabra
+}
+`;
+    expect(output).toEqual(expected);
+  });
 });

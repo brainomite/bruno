@@ -26,6 +26,7 @@ vars {
         "name": "url",
         "value": "http://localhost:3000",
         "enabled" : true,
+        "secret": false
       }]
     };
 
@@ -45,15 +46,18 @@ vars {
       "variables": [{
         "name": "url",
         "value": "http://localhost:3000",
-        "enabled" : true
+        "enabled" : true,
+        "secret": false
       }, {
         "name": "port",
         "value": "3000",
-        "enabled" : true
+        "enabled" : true,
+        "secret": false
       }, {
         "name": "token",
         "value": "secret",
-        "enabled" : false
+        "enabled" : false,
+        "secret": false
       }]
     };
 
@@ -76,10 +80,12 @@ vars {
         "name": "url",
         "value": "http://localhost:3000",
         "enabled" : true,
+        "secret": false
       }, {
         "name": "port",
         "value": "3000",
         "enabled" : true,
+        "secret": false
       }]
     };
 
@@ -101,14 +107,46 @@ vars {
         "name": "url",
         "value": "",
         "enabled" : true,
+        "secret": false
       }, {
         "name": "phone",
         "value": "",
         "enabled" : true,
+        "secret": false
       }, {
         "name": "api-key",
         "value": "",
         "enabled" : true,
+        "secret": false
+      }]
+    };
+
+    expect(output).toEqual(expected);
+  });
+
+  it("should parse secret vars", () => {
+    const input = `
+vars {
+  url: http://localhost:3000
+}
+
+vars:secret {
+  token: abracadabra
+}
+`;
+
+    const output = parser(input);
+    const expected = {
+      "variables": [{
+        "name": "url",
+        "value": "http://localhost:3000",
+        "enabled" : true,
+        "secret": false
+      }, {
+        "name": "token",
+        "value": "abracadabra",
+        "enabled" : true,
+        "secret": true
       }]
     };
 

@@ -2,7 +2,7 @@ const ohm = require("ohm-js");
 const _ = require('lodash');
 
 const grammar = ohm.grammar(`Bru {
-  BruEnvFile = (vars)*
+  BruEnvFile = (vars | secretvars)*
 
   nl = "\\r"? "\\n"
   st = " " | "\\t"
@@ -19,6 +19,7 @@ const grammar = ohm.grammar(`Bru {
   key = keychar*
   value = valuechar*
 
+  secretvars = "vars:secret" dictionary
   vars = "vars" dictionary
 }`);
 
@@ -93,6 +94,18 @@ const sem = grammar.createSemantics().addAttribute('ast', {
   },
   vars(_1, dictionary) {
     const vars = mapPairListToKeyValPairs(dictionary.ast);
+    _.each(vars, v => {
+      v.secret = false;
+    });
+    return {
+      variables: vars
+    };
+  },
+  secretvars: (_1, dictionary) => {
+    const vars = mapPairListToKeyValPairs(dictionary.ast);
+    _.each(vars, v => {
+      v.secret = true;
+    });
     return {
       variables: vars
     };
