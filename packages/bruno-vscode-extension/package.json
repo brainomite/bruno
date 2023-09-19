@@ -10,16 +10,25 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "bruno",
-      "aliases": ["bruno", "bruno"],
-      "extensions": [".bru"],
-      "configuration": "./language-configuration.json"
-    }],
-    "grammars": [{
-      "language": "bruno",
-      "scopeName": "source.bru",
-      "path": "./syntaxes/bruno.tmLanguage.json"
-    }]
+    "languages": [
+      {
+        "id": "bruno",
+        "aliases": [
+          "bruno",
+          "bruno"
+        ],
+        "extensions": [
+          ".bru"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "bruno",
+        "scopeName": "source.bru",
+        "path": "./syntaxes/bruno.tmLanguage.json"
+      }
+    ]
   }
 }

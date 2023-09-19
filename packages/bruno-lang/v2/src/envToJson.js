@@ -1,4 +1,4 @@
-const ohm = require("ohm-js");
+const ohm = require('ohm-js');
 const _ = require('lodash');
 
 const grammar = ohm.grammar(`Bru {
@@ -24,15 +24,15 @@ const grammar = ohm.grammar(`Bru {
 }`);
 
 const mapPairListToKeyValPairs = (pairList = []) => {
-  if(!pairList.length) {
+  if (!pairList.length) {
     return [];
   }
 
-  return _.map(pairList[0], pair => {
+  return _.map(pairList[0], (pair) => {
     let name = _.keys(pair)[0];
     let value = pair[name];
     let enabled = true;
-    if (name && name.length && name.charAt(0) === "~") {
+    if (name && name.length && name.charAt(0) === '~') {
       name = name.slice(1);
       enabled = false;
     }
@@ -53,15 +53,19 @@ const concatArrays = (objValue, srcValue) => {
 
 const sem = grammar.createSemantics().addAttribute('ast', {
   BruEnvFile(tags) {
-    if(!tags || !tags.ast || !tags.ast.length) {
+    if (!tags || !tags.ast || !tags.ast.length) {
       return {
         variables: []
       };
     }
 
-    return _.reduce(tags.ast, (result, item) => {
-      return _.mergeWith(result, item, concatArrays);
-    }, {});
+    return _.reduce(
+      tags.ast,
+      (result, item) => {
+        return _.mergeWith(result, item, concatArrays);
+      },
+      {}
+    );
   },
   dictionary(_1, _2, pairlist, _3) {
     return pairlist.ast;
@@ -86,15 +90,15 @@ const sem = grammar.createSemantics().addAttribute('ast', {
   st(_) {
     return '';
   },
-  tagend(_1 ,_2) {
+  tagend(_1, _2) {
     return '';
   },
   _iter(...elements) {
-    return elements.map(e => e.ast);
+    return elements.map((e) => e.ast);
   },
   vars(_1, dictionary) {
     const vars = mapPairListToKeyValPairs(dictionary.ast);
-    _.each(vars, v => {
+    _.each(vars, (v) => {
       v.secret = false;
     });
     return {
@@ -103,7 +107,7 @@ const sem = grammar.createSemantics().addAttribute('ast', {
   },
   secretvars: (_1, dictionary) => {
     const vars = mapPairListToKeyValPairs(dictionary.ast);
-    _.each(vars, v => {
+    _.each(vars, (v) => {
       v.secret = true;
     });
     return {
@@ -115,11 +119,11 @@ const sem = grammar.createSemantics().addAttribute('ast', {
 const parser = (input) => {
   const match = grammar.match(input);
 
-  if(match.succeeded()) {
+  if (match.succeeded()) {
     return sem(match).ast;
   } else {
     throw new Error(match.message);
   }
-}
+};
 
 module.exports = parser;

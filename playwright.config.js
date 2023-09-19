@@ -7,7 +7,7 @@ const { devices } = require('@playwright/test');
  */
 // require('dotenv').config();
 
-process.env.PLAYWRIGHT = "1";
+process.env.PLAYWRIGHT = '1';
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -42,7 +42,7 @@ const config = {
     baseURL: 'http://localhost:3000',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'retain-on-failure',
+    trace: 'retain-on-failure'
   },
 
   /* Configure projects for major browsers */
@@ -50,23 +50,23 @@ const config = {
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-      },
+        ...devices['Desktop Chrome']
+      }
     },
 
     {
       name: 'firefox',
       use: {
-        ...devices['Desktop Firefox'],
-      },
+        ...devices['Desktop Firefox']
+      }
     },
 
     {
       name: 'webkit',
       use: {
-        ...devices['Desktop Safari'],
-      },
-    },
+        ...devices['Desktop Safari']
+      }
+    }
 
     /* Test against mobile viewports. */
     // {
@@ -103,8 +103,8 @@ const config = {
   /* Run your local dev server before starting the tests */
   webServer: {
     command: 'npm run dev:web',
-    port: 3000,
-  },
+    port: 3000
+  }
 };
 
 module.exports = config;
